@@ -1,4 +1,88 @@
+<?php
+
+require_once 'config/database.php';
+
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $username = trim($_POST["username"]);
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];
+    $confirm_password = $_POST["confirm_password"];
+
+    if (empty($username) || empty($email) || empty($password)) {
+
+        $message = "Please fill in all fields.";
+
+    } elseif ($password !== $confirm_password) {
+
+        $message = "Passwords do not match.";
+
+    } else {
+
+        $check_sql = "SELECT id FROM user WHERE email = ?";
+
+        $check_stmt = $conn->prepare($check_sql);
+
+        $check_stmt->bind_param("s", $email);
+
+        $check_stmt->execute();
+
+        $check_stmt->store_result();
+
+
+        if ($check_stmt->num_rows > 0) {
+
+            $message = "Email already exists.";
+
+        } else {
+
+            $hashed_password = password_hash(
+                $password,
+                PASSWORD_DEFAULT
+            );
+
+            $role = "user";
+
+
+            $sql = "INSERT INTO user
+                    (username, email, password, role)
+                    VALUES (?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bind_param(
+                "ssss",
+                $username,
+                $email,
+                $hashed_password,
+                $role
+            );
+
+
+            if ($stmt->execute()) {
+
+                $message = "Registration successful! You can now login.";
+
+            } else {
+
+                $message = "Registration failed. Please try again.";
+
+            }
+
+            $stmt->close();
+        }
+
+        $check_stmt->close();
+    }
+}
+
+?>
+
+
 <?php include 'includes/header.php'; ?>
+
 
 <section class="form-section">
 
@@ -11,7 +95,16 @@
         </p>
 
 
-        <form action="#" method="POST">
+        <?php if (!empty($message)): ?>
+
+            <p class="form-message">
+                <?php echo htmlspecialchars($message); ?>
+            </p>
+
+        <?php endif; ?>
+
+
+        <form action="register.php" method="POST">
 
             <div class="form-group">
 

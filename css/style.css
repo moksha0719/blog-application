@@ -270,3 +270,16 @@ nav a:hover {
     }
 
 }
+.form-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+}
