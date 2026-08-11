@@ -283,3 +283,9 @@ nav a:hover {
     background-color: #ffebee;
     color: #c62828;
 }
+
+.empty-message {
+    text-align: center;
+    color: #777;
+    padding: 30px;
+}
