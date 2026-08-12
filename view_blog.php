@@ -1,6 +1,7 @@
 <?php
 
 require_once 'config/database.php';
+require_once 'includes/auth.php';
 
 
 // Check whether blog ID exists
@@ -20,6 +21,7 @@ $blog_id = (int) $_GET["id"];
 
 $sql = "SELECT
             blogPost.id,
+            blogPost.user_id,
             blogPost.title,
             blogPost.content,
             blogPost.created_at,
@@ -63,33 +65,82 @@ $blog = $result->fetch_assoc();
     <div class="single-blog">
 
 
+        <!-- Blog Title -->
+
         <h1>
 
             <?php
+
             echo htmlspecialchars($blog["title"]);
+
             ?>
 
         </h1>
 
 
+        <!-- Blog Author and Date -->
+
         <p class="blog-info">
 
             By
+
             <?php
+
             echo htmlspecialchars($blog["username"]);
+
             ?>
 
             |
 
             <?php
+
             echo date(
                 "F j, Y",
                 strtotime($blog["created_at"])
             );
+
             ?>
 
         </p>
 
+
+        <!-- Edit and Delete buttons -->
+
+        <?php if (
+            isset($_SESSION["user_id"]) &&
+            $_SESSION["user_id"] == $blog["user_id"]
+        ): ?>
+
+            <div class="blog-actions">
+
+
+                <!-- Edit button -->
+
+                <a
+                    href="edit_blog.php?id=<?php echo $blog["id"]; ?>"
+                    class="btn"
+                >
+                    Edit Blog
+                </a>
+
+
+                <!-- Delete button -->
+
+                <a
+                    href="delete_blog.php?id=<?php echo $blog["id"]; ?>"
+                    class="btn delete-btn"
+                    onclick="return confirm('Are you sure you want to delete this blog?');"
+                >
+                    Delete Blog
+                </a>
+
+
+            </div>
+
+        <?php endif; ?>
+
+
+        <!-- Blog Content -->
 
         <div class="blog-content-full">
 
@@ -108,11 +159,12 @@ $blog = $result->fetch_assoc();
                 if (trim($paragraph) !== "") {
 
                     echo "<p>";
+
                     echo nl2br(
                         htmlspecialchars($paragraph)
                     );
-                    echo "</p>";
 
+                    echo "</p>";
                 }
 
             }

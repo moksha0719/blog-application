@@ -289,3 +289,17 @@ nav a:hover {
     color: #777;
     padding: 30px;
 }
+
+.blog-actions {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.delete-btn {
+    background-color: #dc2626;
+}
+
+.delete-btn:hover {
+    background-color: #b91c1c;
+}
