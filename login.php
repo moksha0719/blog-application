@@ -4,6 +4,7 @@ require_once 'config/database.php';
 require_once 'includes/auth.php';
 
 $message = "";
+$message_type = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -14,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($password)) {
 
         $message = "Please enter email and password.";
+        $message_type = "error";
 
     } else {
 
@@ -50,12 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
 
                 $message = "Invalid email or password.";
+                $message_type = "error";
 
             }
 
         } else {
 
             $message = "Invalid email or password.";
+            $message_type = "error";
 
         }
 
@@ -73,6 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
+        <span class="form-icon">👋</span>
+
         <h2>Welcome Back</h2>
 
         <p class="form-description">
@@ -82,7 +88,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if (!empty($message)): ?>
 
-            <p class="form-message error-message">
+            <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </p>
 
@@ -94,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="email">
-                    Email
+                    📧 Email
                 </label>
 
                 <input
@@ -111,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="password">
-                    Password
+                    🔒 Password
                 </label>
 
                 <input
@@ -126,18 +133,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <button type="submit" class="btn">
-                Login
+                🔐 Login
             </button>
 
         </form>
 
 
-        <p style="margin-top: 20px;">
+        <p style="margin-top: 24px; text-align: center; color: var(--text-muted);">
 
             Don't have an account?
 
-            <a href="register.php" style="color: #2563eb;">
-                Register 
+            <a href="register.php" style="color: var(--primary); font-weight: 600;">
+                Register
             </a>
 
         </p>

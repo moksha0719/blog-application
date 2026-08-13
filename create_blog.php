@@ -15,6 +15,7 @@ if (!isset($_SESSION["user_id"])) {
 
 
 $message = "";
+$message_type = "";
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($title) || empty($content)) {
 
         $message = "Please fill in all fields.";
+        $message_type = "error";
 
     } else {
 
@@ -64,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
 
             $message = "Failed to create blog.";
+            $message_type = "error";
 
         }
 
@@ -81,6 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
+        <span class="form-icon">✍️</span>
+
         <h2>Create New Blog</h2>
 
         <p class="form-description">
@@ -90,10 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if (!empty($message)): ?>
 
-            <p class="form-message error-message">
-
+            <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
                 <?php echo htmlspecialchars($message); ?>
-
             </p>
 
         <?php endif; ?>
@@ -108,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="title">
-                    Blog Title
+                    📌 Blog Title
                 </label>
 
                 <input
@@ -125,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="content">
-                    Blog Content
+                    📝 Blog Content
                 </label>
 
                 <textarea
@@ -143,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 type="submit"
                 class="btn"
             >
-                Publish Blog
+                🚀 Publish Blog
             </button>
 
 

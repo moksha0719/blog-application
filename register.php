@@ -3,6 +3,7 @@
 require_once 'config/database.php';
 
 $message = "";
+$message_type = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -14,10 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username) || empty($email) || empty($password)) {
 
         $message = "Please fill in all fields.";
+        $message_type = "error";
 
     } elseif ($password !== $confirm_password) {
 
         $message = "Passwords do not match.";
+        $message_type = "error";
 
     } else {
 
@@ -35,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($check_stmt->num_rows > 0) {
 
             $message = "Email already exists.";
+            $message_type = "error";
 
         } else {
 
@@ -64,10 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt->execute()) {
 
                 $message = "Registration successful! You can now login.";
+                $message_type = "success";
 
             } else {
 
                 $message = "Registration failed. Please try again.";
+                $message_type = "error";
 
             }
 
@@ -88,6 +94,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
+        <span class="form-icon">🎨</span>
+
         <h2>Create Account</h2>
 
         <p class="form-description">
@@ -97,7 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if (!empty($message)): ?>
 
-            <p class="form-message">
+            <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </p>
 
@@ -109,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="username">
-                    Username
+                    👤 Username
                 </label>
 
                 <input
@@ -126,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="email">
-                    Email
+                    📧 Email
                 </label>
 
                 <input
@@ -143,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="password">
-                    Password
+                    🔒 Password
                 </label>
 
                 <input
@@ -160,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="confirm_password">
-                    Confirm Password
+                    ✅ Confirm Password
                 </label>
 
                 <input
@@ -175,17 +184,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <button type="submit" class="btn">
-                Register
+                🚀 Create Account
             </button>
 
         </form>
 
 
-        <p class="form-footer">
+        <p style="margin-top: 24px; text-align: center; color: var(--text-muted);">
 
             Already have an account?
 
-            <a href="login.php">
+            <a href="login.php" style="color: var(--primary); font-weight: 600;">
                 Login here
             </a>
 
