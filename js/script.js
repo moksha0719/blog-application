@@ -1,1 +1,5 @@
-console.log("Blog application JavaScript loaded successfully.");
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("BlogSpace loaded successfully.");
+
+});

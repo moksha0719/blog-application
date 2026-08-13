@@ -27,170 +27,157 @@ $result = $conn->query($sql);
 
 <section class="hero">
 
-    <div class="container">
+    <h1>
+        Write. Share. Inspire.
+    </h1>
 
-        <h1>
-            Welcome to My Blog
-        </h1>
-
-        <p>
-            Discover interesting stories, ideas and experiences.
-        </p>
+    <p>
+        A simple place to share your ideas,
+        stories and experiences with the world.
+    </p>
 
 
-        <?php if (isset($_SESSION["user_id"])): ?>
+    <?php if (isset($_SESSION["user_id"])): ?>
 
-            <a
-                href="create_blog.php"
-                class="btn"
-            >
-                Create a Blog
-            </a>
+        <a
+            href="create_blog.php"
+            class="hero-button"
+        >
+            + Create a Blog
+        </a>
 
-        <?php else: ?>
+    <?php else: ?>
 
-            <a
-                href="register.php"
-                class="btn"
-            >
-                Get Started
-            </a>
+        <a
+            href="register.php"
+            class="hero-button"
+        >
+            Get Started
+        </a>
 
-        <?php endif; ?>
-
-    </div>
+    <?php endif; ?>
 
 </section>
 
 
 
-<section class="blogs-section">
+<section class="blog-section">
 
-    <div class="container">
+
+    <div class="section-heading">
 
         <h2>
-            Latest Blogs
+            Latest Stories
         </h2>
 
-
-        <div class="blog-grid">
-
-
-            <?php if ($result->num_rows > 0): ?>
+    </div>
 
 
-                <?php while ($blog = $result->fetch_assoc()): ?>
+    <div class="blog-grid">
 
 
-                    <article class="blog-card">
+        <?php if ($result->num_rows > 0): ?>
 
 
-                        <h3>
-
-                            <?php
-
-                            echo htmlspecialchars(
-                                $blog["title"]
-                            );
-
-                            ?>
-
-                        </h3>
+            <?php while ($blog = $result->fetch_assoc()): ?>
 
 
-                        <p class="blog-info">
-
-                            By
-
-                            <?php
-
-                            echo htmlspecialchars(
-                                $blog["username"]
-                            );
-
-                            ?>
-
-                            |
-
-                            <?php
-
-                            echo date(
-                                "F j, Y",
-                                strtotime(
-                                    $blog["created_at"]
-                                )
-                            );
-
-                            ?>
-
-                        </p>
+                <article class="blog-card">
 
 
-                        <p>
+                    <h3>
 
-                            <?php
+                        <?php
 
-                            $preview = substr(
-                                strip_tags(
-                                    $blog["content"]
-                                ),
-                                0,
-                                150
-                            );
+                        echo htmlspecialchars(
+                            $blog["title"]
+                        );
 
-                            echo htmlspecialchars(
-                                $preview
-                            );
+                        ?>
 
-                            ?>
-
-                            <?php
-
-                            if (
-                                strlen(
-                                    strip_tags(
-                                        $blog["content"]
-                                    )
-                                ) > 150
-                            ) {
-
-                                echo "...";
-
-                            }
-
-                            ?>
-
-                        </p>
+                    </h3>
 
 
-                        <a
-                            href="view_blog.php?id=<?php echo $blog["id"]; ?>"
-                            class="read-more"
-                        >
-                            Read More →
-                        </a>
+                    <p class="blog-info">
+
+                        By
+
+                        <?php
+
+                        echo htmlspecialchars(
+                            $blog["username"]
+                        );
+
+                        ?>
+
+                        •
+
+                        <?php
+
+                        echo date(
+                            "M j, Y",
+                            strtotime(
+                                $blog["created_at"]
+                            )
+                        );
+
+                        ?>
+
+                    </p>
 
 
-                    </article>
+                    <p>
+
+                        <?php
+
+                        $preview = substr(
+                            strip_tags(
+                                $blog["content"]
+                            ),
+                            0,
+                            180
+                        );
+
+                        echo htmlspecialchars(
+                            $preview
+                        );
+
+                        ?>
+
+                        ...
+
+                    </p>
 
 
-                <?php endwhile; ?>
+                    <a
+                        href="view_blog.php?id=<?php echo $blog["id"]; ?>"
+                        class="read-more"
+                    >
+                        Read article →
+                    </a>
 
 
-            <?php else: ?>
+                </article>
 
 
-                <p class="empty-message">
-        No blogs have been published yet.
-    </p>
+            <?php endwhile; ?>
 
 
-            <?php endif; ?>
+        <?php else: ?>
 
 
-        </div>
+            <p class="empty-message">
+
+                No blogs have been published yet.
+
+            </p>
+
+
+        <?php endif; ?>
+
 
     </div>
+
 
 </section>
 

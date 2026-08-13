@@ -1,12 +1,38 @@
-</main>
+<footer class="site-footer">
 
-<footer class="footer">
+    <div class="footer-container">
 
-    <p>© 2026 My Blog. All rights reserved.</p>
+
+        <div class="footer-brand">
+
+            <h3>
+                BlogSpace
+            </h3>
+
+            <p>
+                A place to share your ideas,
+                stories and experiences.
+            </p>
+
+        </div>
+
+
+        <div class="footer-copy">
+
+            <p>
+                © <?php echo date("Y"); ?> BlogSpace
+            </p>
+
+        </div>
+
+
+    </div>
 
 </footer>
+
 
 <script src="js/script.js"></script>
 
 </body>
+
 </html>

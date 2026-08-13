@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
-        <h2>Login</h2>
+        <h2>Welcome Back</h2>
 
         <p class="form-description">
             Login to manage your blogs.
@@ -132,12 +132,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
 
-        <p class="form-footer">
+        <p style="margin-top: 20px;">
 
             Don't have an account?
 
-            <a href="register.php">
-                Register here
+            <a href="register.php" style="color: #2563eb;">
+                Register 
             </a>
 
         </p>
