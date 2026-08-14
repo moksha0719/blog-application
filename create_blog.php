@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $title = trim($_POST["title"]);
     $content = trim($_POST["content"]);
+    $image = "";
 
     $user_id = $_SESSION["user_id"];
 
@@ -35,42 +36,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } else {
 
-        // Insert blog into database
-
-        $sql = "INSERT INTO blogPost
-                (user_id, title, content)
-                VALUES (?, ?, ?)";
-
-        $stmt = $conn->prepare($sql);
-
-        $stmt->bind_param(
-            "iss",
-            $user_id,
-            $title,
-            $content
-        );
-
-
-        if ($stmt->execute()) {
-
-            // Get the newly created blog ID
-
-            $blog_id = $stmt->insert_id;
-
-            header(
-                "Location: view_blog.php?id=" . $blog_id
-            );
-
-            exit;
-
-        } else {
-
-            $message = "Failed to create blog.";
-            $message_type = "error";
-
+        // Handle image upload
+        if (isset($_FILES['blog_image']) && $_FILES['blog_image']['error'] == 0) {
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $filename = $_FILES['blog_image']['name'];
+            $filetype = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $filesize = $_FILES['blog_image']['size'];
+            
+            if (in_array($filetype, $allowed)) {
+                if ($filesize <= 5000000) {
+                    $upload_dir = 'uploads/';
+                    if (!file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
+                    
+                    $new_filename = time() . '_' . uniqid() . '.' . $filetype;
+                    $upload_path = $upload_dir . $new_filename;
+                    
+                    if (move_uploaded_file($_FILES['blog_image']['tmp_name'], $upload_path)) {
+                        $image = $upload_path;
+                    } else {
+                        $message = "Failed to upload image.";
+                        $message_type = "error";
+                    }
+                } else {
+                    $message = "Image size must be less than 5MB.";
+                    $message_type = "error";
+                }
+            } else {
+                $message = "Only JPG, JPEG, PNG, GIF, and WEBP files are allowed.";
+                $message_type = "error";
+            }
         }
 
-        $stmt->close();
+        if (empty($message)) {
+            $sql = "INSERT INTO blogPost
+                    (user_id, title, content, image)
+                    VALUES (?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bind_param(
+                "isss",
+                $user_id,
+                $title,
+                $content,
+                $image
+            );
+
+
+            if ($stmt->execute()) {
+
+                $blog_id = $stmt->insert_id;
+                header("Location: view_blog.php?id=" . $blog_id);
+                exit;
+
+            } else {
+
+                $message = "Failed to create blog.";
+                $message_type = "error";
+
+            }
+
+            $stmt->close();
+        }
     }
 }
 
@@ -80,76 +109,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include 'includes/header.php'; ?>
 
 
-<section class="form-section">
+<section class="create-blog-section">
 
-    <div class="form-container">
+    <div class="create-blog-container">
 
-        <span class="form-icon">✍️</span>
+        <!-- Page Header -->
+        <div class="create-blog-header">
+            <div class="create-blog-header-left">
+                <span class="create-blog-icon">✍️</span>
+                <div>
+                    <h1>Create New Blog</h1>
+                    <p class="create-blog-subtitle">Share your thoughts with the world.</p>
+                </div>
+            </div>
+            <a href="dashboard.php" class="btn-back">
+                ← Back to Dashboard
+            </a>
+        </div>
 
-        <h2>Create New Blog</h2>
-
-        <p class="form-description">
-            Share your thoughts with the world.
-        </p>
-
-
+        <!-- Message Display -->
         <?php if (!empty($message)): ?>
-
-            <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+            <div class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
                 <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
                 <?php echo htmlspecialchars($message); ?>
-            </p>
-
+            </div>
         <?php endif; ?>
 
-
-        <form
-            action="create_blog.php"
-            method="POST"
-        >
-
+        <!-- Create Blog Form -->
+        <form action="create_blog.php" method="POST" class="create-blog-form" enctype="multipart/form-data">
 
             <div class="form-group">
-
                 <label for="title">
                     📌 Blog Title
                 </label>
-
                 <input
                     type="text"
                     id="title"
                     name="title"
                     placeholder="Enter blog title"
                     required
+                    class="form-input"
                 >
-
             </div>
 
+            <div class="form-group">
+                <label for="blog_image">
+                    🖼️ Featured Image
+                </label>
+                <input
+                    type="file"
+                    id="blog_image"
+                    name="blog_image"
+                    accept="image/*"
+                    class="form-input-file"
+                >
+                <p class="file-hint">Supported formats: JPG, PNG, GIF, WEBP (Max 5MB)</p>
+            </div>
 
             <div class="form-group">
-
                 <label for="content">
                     📝 Blog Content
                 </label>
-
                 <textarea
                     id="content"
                     name="content"
-                    rows="12"
+                    rows="14"
                     placeholder="Write your blog here..."
                     required
+                    class="form-textarea"
                 ></textarea>
-
             </div>
 
-
-            <button
-                type="submit"
-                class="btn"
-            >
-                🚀 Publish Blog
-            </button>
-
+            <div class="form-actions">
+                <button type="submit" class="btn-publish">
+                    🚀 Publish Blog
+                </button>
+                <a href="dashboard.php" class="btn-cancel">
+                    Cancel
+                </a>
+            </div>
 
         </form>
 
