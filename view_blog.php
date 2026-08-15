@@ -55,14 +55,28 @@ function removeEmojis($text) {
     return $text;
 }
 
-// Get the referring page URL
-$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
-if (strpos($referer, 'dashboard.php') !== false) {
-    $back_url = 'dashboard.php';
-} elseif (strpos($referer, 'index.php') !== false) {
+// Check if user came from edit page using session
+if (isset($_SESSION['return_to']) && $_SESSION['return_to'] == 'latest-stories') {
     $back_url = 'index.php#latest-stories';
+    $back_text = 'Latest Stories';
+    unset($_SESSION['return_to']);
 } else {
-    $back_url = 'index.php';
+    // Get the referring page URL
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
+    
+    if (strpos($referer, 'dashboard.php') !== false) {
+        $back_url = 'dashboard.php';
+        $back_text = 'Dashboard';
+    } elseif (strpos($referer, 'index.php') !== false) {
+        $back_url = 'index.php#latest-stories';
+        $back_text = 'Latest Stories';
+    } elseif (strpos($referer, 'edit_blog.php') !== false) {
+        $back_url = 'index.php#latest-stories';
+        $back_text = 'Latest Stories';
+    } else {
+        $back_url = 'index.php';
+        $back_text = 'Home';
+    }
 }
 
 ?>
@@ -74,26 +88,26 @@ if (strpos($referer, 'dashboard.php') !== false) {
 
     <div class="single-blog">
 
-        <!-- Stylish Back Button -->
+        <!-- Stylish Back Button - Smart -->
         <div class="single-blog-back">
             <a href="<?php echo $back_url; ?>" class="btn-back-article">
-                <span class="back-arrow">←</span>
-                <span class="back-text">Back</span>
+                <span class="back-arrow"><i class="fas fa-arrow-left"></i></span>
+                <span class="back-text">Back to <?php echo $back_text; ?></span>
             </a>
         </div>
 
         <div class="single-blog-header">
-            <span class="tag">📝 Article</span>
+            <span class="tag"><i class="fas fa-bookmark"></i> Article</span>
             <h1><?php echo htmlspecialchars($blog["title"]); ?></h1>
             <div class="single-blog-meta">
                 <div class="author">
                     <span class="avatar">
                         <?php echo strtoupper(substr($blog["username"], 0, 1)); ?>
                     </span>
-                    <span class="name"><?php echo htmlspecialchars($blog["username"]); ?></span>
+                    <span class="name"><i class="fas fa-user"></i> <?php echo htmlspecialchars($blog["username"]); ?></span>
                 </div>
-                <span class="date"><?php echo date("F j, Y", strtotime($blog["created_at"])); ?></span>
-                <span class="date">• 3 min read</span>
+                <span class="date"><i class="far fa-calendar-alt"></i> <?php echo date("F j, Y", strtotime($blog["created_at"])); ?></span>
+                <span class="date"><i class="far fa-clock"></i> 3 min read</span>
             </div>
         </div>
 
@@ -103,7 +117,7 @@ if (strpos($referer, 'dashboard.php') !== false) {
                 <img src="<?php echo htmlspecialchars($blog["image"]); ?>" alt="<?php echo htmlspecialchars($blog["title"]); ?>" class="blog-featured-image">
             <?php else: ?>
                 <div class="image-placeholder">
-                    📚
+                    <i class="fas fa-image" style="font-size: 56px; color: rgba(255,255,255,0.2);"></i>
                 </div>
             <?php endif; ?>
         </div>
@@ -128,12 +142,12 @@ if (strpos($referer, 'dashboard.php') !== false) {
             ): ?>
                 <div class="blog-actions">
                     <a href="edit_blog.php?id=<?php echo $blog["id"]; ?>" class="btn">
-                        ✏️ Edit
+                        <i class="fas fa-edit"></i> Edit
                     </a>
                     <a href="delete_blog.php?id=<?php echo $blog["id"]; ?>" 
                        class="btn btn-danger"
                        onclick="return confirm('Are you sure you want to delete this blog?');">
-                        🗑️ Delete
+                        <i class="fas fa-trash-alt"></i> Delete
                     </a>
                 </div>
             <?php endif; ?>

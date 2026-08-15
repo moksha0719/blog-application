@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
-        <span class="form-icon">👋</span>
+        <span class="form-icon"><i class="fas fa-hand-wave"></i></span>
 
         <h2>Welcome Back</h2>
 
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (!empty($message)): ?>
 
             <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
+                <?php echo $message_type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </p>
 
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="email">
-                    📧 Email
+                    <i class="fas fa-envelope"></i> Email
                 </label>
 
                 <input
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="password">
-                    🔒 Password
+                    <i class="fas fa-lock"></i> Password
                 </label>
 
                 <input
@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <button type="submit" class="btn">
-                🔐 Login
+                <i class="fas fa-sign-in-alt"></i> Login
             </button>
 
         </form>

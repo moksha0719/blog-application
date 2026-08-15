@@ -116,21 +116,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Page Header -->
         <div class="create-blog-header">
             <div class="create-blog-header-left">
-                <span class="create-blog-icon">✍️</span>
+                <span class="create-blog-icon"><i class="fas fa-pen-fancy"></i></span>
                 <div>
                     <h1>Create New Blog</h1>
                     <p class="create-blog-subtitle">Share your thoughts with the world.</p>
                 </div>
             </div>
             <a href="dashboard.php" class="btn-back">
-                ← Back to Dashboard
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
 
         <!-- Message Display -->
         <?php if (!empty($message)): ?>
             <div class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
+                <?php echo $message_type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </div>
         <?php endif; ?>
@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label for="title">
-                    📌 Blog Title
+                    <i class="fas fa-heading"></i> Blog Title
                 </label>
                 <input
                     type="text"
@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label for="blog_image">
-                    🖼️ Featured Image
+                    <i class="fas fa-image"></i> Featured Image
                 </label>
                 <input
                     type="file"
@@ -163,12 +163,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     accept="image/*"
                     class="form-input-file"
                 >
-                <p class="file-hint">Supported formats: JPG, PNG, GIF, WEBP (Max 5MB)</p>
+                <p class="file-hint"><i class="fas fa-info-circle"></i> Supported formats: JPG, PNG, GIF, WEBP (Max 5MB)</p>
             </div>
 
             <div class="form-group">
                 <label for="content">
-                    📝 Blog Content
+                    <i class="fas fa-file-alt"></i> Blog Content
                 </label>
                 <textarea
                     id="content"
@@ -182,10 +182,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-actions">
                 <button type="submit" class="btn-publish">
-                    🚀 Publish Blog
+                    <i class="fas fa-paper-plane"></i> Publish Blog
                 </button>
                 <a href="dashboard.php" class="btn-cancel">
-                    Cancel
+                    <i class="fas fa-times"></i> Cancel
                 </a>
             </div>
 

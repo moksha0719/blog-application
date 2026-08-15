@@ -67,6 +67,17 @@ if ($blog["user_id"] != $user_id) {
     exit;
 }
 
+// Check where user came from - set return destination
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+
+if (strpos($referer, 'index.php') !== false) {
+    $_SESSION['return_to'] = 'latest-stories';
+} elseif (strpos($referer, 'dashboard.php') !== false) {
+    $_SESSION['return_to'] = 'dashboard';
+} else {
+    $_SESSION['return_to'] = 'latest-stories';
+}
+
 // Auto-crop function to 16:9 ratio
 function autoCropImage($image_path) {
     $info = getimagesize($image_path);
@@ -273,10 +284,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
 
     <div class="edit-blog-container">
 
-        <!-- Stylish Back Button -->
+        <!-- Stylish Back Button - Goes to Blog View -->
         <div class="single-blog-back">
             <a href="view_blog.php?id=<?php echo $blog_id; ?>" class="btn-back-article">
-                <span class="back-arrow">←</span>
+                <span class="back-arrow"><i class="fas fa-arrow-left"></i></span>
                 <span class="back-text">Back to Blog</span>
             </a>
         </div>
@@ -284,10 +295,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
         <!-- Page Header -->
         <div class="edit-blog-header">
             <div class="edit-blog-header-left">
-                <span class="edit-blog-icon">✏️</span>
+                <span class="edit-blog-icon"><i class="fas fa-edit"></i></span>
                 <div>
                     <h1>Edit Blog</h1>
-                    <p class="edit-blog-subtitle">Update your blog post.</p>
+                    <p class="edit-blog-subtitle"><i class="fas fa-pen"></i> Update your blog post.</p>
                 </div>
             </div>
         </div>
@@ -295,7 +306,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
         <!-- Message Display -->
         <?php if (!empty($message)): ?>
             <div class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
+                <?php echo $message_type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </div>
         <?php endif; ?>
@@ -305,7 +316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
 
             <div class="form-group">
                 <label for="title">
-                    📌 Blog Title
+                    <i class="fas fa-heading"></i> Blog Title
                 </label>
                 <input
                     type="text"
@@ -319,20 +330,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
 
             <div class="form-group">
                 <label for="blog_image">
-                    🖼️ Featured Image (16:9 Recommended)
+                    <i class="fas fa-image"></i> Featured Image (16:9 Recommended)
                 </label>
                 <?php if (!empty($blog["image"])): ?>
                     <div class="current-image">
-                        <p>Current Image:</p>
+                        <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Current Image:</p>
                         <img src="<?php echo htmlspecialchars($blog["image"]); ?>" alt="Current image" class="current-image-preview">
                         <div class="image-actions">
                             <button type="submit" name="delete_image" class="btn-delete-image" onclick="return confirm('Are you sure you want to delete this image?');">
-                                🗑️ Delete Image
+                                <i class="fas fa-trash-alt"></i> Delete Image
                             </button>
                         </div>
                     </div>
                 <?php else: ?>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">No image uploaded</p>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">
+                        <i class="fas fa-info-circle"></i> No image uploaded
+                    </p>
                 <?php endif; ?>
                 <input
                     type="file"
@@ -342,7 +355,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
                     class="form-input-file"
                     onchange="previewImage(event)"
                 >
-                <p class="file-hint">Leave empty to keep current image. Upload new to replace. Supported: JPG, PNG, GIF, WEBP (Max 5MB)</p>
+                <p class="file-hint"><i class="fas fa-info-circle"></i> Leave empty to keep current image. Upload new to replace. Supported: JPG, PNG, GIF, WEBP (Max 5MB)</p>
                 
                 <!-- Image Preview & Crop Container -->
                 <div id="imagePreviewContainer" style="display: none; margin-top: 15px;">
@@ -350,11 +363,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
                         <img id="imagePreview" src="#" alt="Image preview" style="max-width: 100%;">
                     </div>
                     <div class="crop-controls" style="margin-top: 12px;">
-                        <button type="button" class="btn-crop" onclick="cropImage()">✂️ Crop Image</button>
-                        <button type="button" class="btn-cancel-crop" onclick="cancelCrop()">Cancel</button>
+                        <button type="button" class="btn-crop" onclick="cropImage()">
+                            <i class="fas fa-crop-alt"></i> Crop Image
+                        </button>
+                        <button type="button" class="btn-cancel-crop" onclick="cancelCrop()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
                     </div>
                     <div id="croppedPreviewContainer" style="display: none; margin-top: 12px;">
-                        <p style="font-weight: 600; font-size: 14px;">Cropped Preview (16:9):</p>
+                        <p style="font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-check-circle" style="color: var(--success);"></i> Cropped Preview (16:9):
+                        </p>
                         <img id="croppedPreview" style="max-width: 100%; border-radius: 8px; border: 2px solid var(--primary);">
                         <input type="hidden" id="cropped_image" name="cropped_image" value="">
                     </div>
@@ -363,7 +382,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
 
             <div class="form-group">
                 <label for="content">
-                    📝 Blog Content
+                    <i class="fas fa-file-alt"></i> Blog Content
                 </label>
                 <textarea
                     id="content"
@@ -376,10 +395,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
 
             <div class="form-actions">
                 <button type="submit" class="btn-publish">
-                    💾 Update Blog
+                    <i class="fas fa-save"></i> Update Blog
                 </button>
                 <a href="view_blog.php?id=<?php echo $blog_id; ?>" class="btn-cancel">
-                    Cancel
+                    <i class="fas fa-times"></i> Cancel
                 </a>
             </div>
 
@@ -481,6 +500,7 @@ function cancelCrop() {
     display: flex;
     gap: 12px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .btn-crop {

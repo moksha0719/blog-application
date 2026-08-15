@@ -361,7 +361,7 @@ button, input, textarea {
 }
 
 /* =========================================
-   HERO IMAGE WITH STATS BELOW
+   HERO IMAGE
 ========================================= */
 
 .hero-image-wrapper {
@@ -445,43 +445,6 @@ button, input, textarea {
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.5px;
-}
-
-/* Stats Below Image */
-.hero-stats-below {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 16px;
-    padding: 14px 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(10px);
-    width: 100%;
-}
-
-.hero-stats-below .stat-item {
-    text-align: center;
-}
-
-.hero-stats-below .stat-number {
-    color: #FFFFFF;
-    font-size: 22px;
-    font-weight: 700;
-    display: block;
-}
-
-.hero-stats-below .stat-label {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 13px;
-}
-
-.hero-stats-below .stat-divider {
-    width: 1px;
-    height: 35px;
-    background: rgba(255, 255, 255, 0.1);
 }
 
 /* =========================================
@@ -1864,6 +1827,178 @@ button, input, textarea {
 }
 
 /* =========================================
+   FONT AWESOME ICON STYLES
+========================================= */
+
+/* General Icon Styles */
+.fas, .far, .fal, .fab {
+    margin-right: 6px;
+}
+
+/* Button Icons */
+.btn i, .btn-publish i, .btn-cancel i, .btn-hero-primary i, .btn-hero-secondary i {
+    margin-right: 8px;
+}
+
+/* Navigation Icons */
+.nav-link i {
+    margin-right: 6px;
+    font-size: 14px;
+}
+
+/* Logo Icon */
+.logo-icon i {
+    font-size: 20px;
+    margin-right: 0;
+}
+
+/* Feature Icons */
+.feature-icon i {
+    font-size: 32px;
+    color: #FFFFFF;
+}
+
+/* Step Icons */
+.step-item h3 i {
+    margin-right: 8px;
+    color: var(--primary);
+}
+
+/* Blog Meta Icons */
+.blog-card-meta i {
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+/* Blog Author Icons */
+.blog-author-name i {
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+/* Read Link Icons */
+.read-link i {
+    margin-left: 4px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.read-link:hover i {
+    transform: translateX(4px);
+}
+
+/* Back Button Icons */
+.btn-back-article .back-arrow i {
+    font-size: 16px;
+    margin-right: 0;
+    transition: transform 0.3s ease;
+}
+
+.btn-back-article:hover .back-arrow i {
+    transform: translateX(-4px);
+}
+
+/* Form Icon */
+.form-icon i {
+    font-size: 48px;
+    color: var(--primary);
+}
+
+/* Form Label Icons */
+.form-group label i {
+    margin-right: 6px;
+    color: var(--primary);
+}
+
+/* Hero Image Icon */
+.hero-image-icon i {
+    font-size: 48px;
+    color: #FFFFFF;
+}
+
+/* Welcome Icon */
+.welcome-icon i {
+    font-size: 32px;
+    color: var(--primary);
+}
+
+/* Action Icons */
+.action-icon i {
+    font-size: 24px;
+}
+
+/* Footer Icons */
+.footer-brand-icon i {
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+.footer-links i {
+    margin-right: 4px;
+}
+
+/* Empty State Icons */
+.empty-icon i {
+    color: var(--text-muted);
+}
+
+/* Form Message Icons */
+.form-message i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.error-message i {
+    color: #DC2626;
+}
+
+.success-message i {
+    color: #16A34A;
+}
+
+/* Badge Icons */
+.badge i {
+    margin-right: 4px;
+}
+
+/* Section Heading Icons */
+.section-heading h2 i {
+    margin-right: 10px;
+    color: var(--primary);
+}
+
+/* View All Link Icons */
+.view-all-link i {
+    margin-left: 4px;
+    transition: transform 0.3s ease;
+}
+
+.view-all-link:hover i {
+    transform: translateX(4px);
+}
+
+/* Dashboard Header Icons */
+.dashboard-header h1 i {
+    margin-right: 10px;
+    color: var(--primary);
+}
+
+.dashboard-subtitle i {
+    margin-right: 6px;
+}
+
+/* Recent Item Icons */
+.recent-item-icon i {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+/* Quick Action Icons */
+.action-card .action-icon i {
+    font-size: 24px;
+}
+
+/* =========================================
    RESPONSIVE - FULLY RESPONSIVE
 ========================================= */
 
@@ -1960,19 +2095,6 @@ button, input, textarea {
     
     .hero-image-label {
         font-size: 14px;
-    }
-    
-    .hero-stats-below {
-        gap: 24px;
-        padding: 12px 20px;
-    }
-    
-    .hero-stats-below .stat-number {
-        font-size: 18px;
-    }
-    
-    .hero-stats-below .stat-divider {
-        height: 28px;
     }
     
     .features-grid,
@@ -2177,6 +2299,28 @@ button, input, textarea {
         width: 100%;
         justify-content: center;
     }
+    
+    /* Icon Responsive */
+    .nav-link i {
+        font-size: 12px;
+        margin-right: 4px;
+    }
+    
+    .hero-image-icon i {
+        font-size: 36px;
+    }
+    
+    .form-icon i {
+        font-size: 36px;
+    }
+    
+    .feature-icon i {
+        font-size: 28px;
+    }
+    
+    .btn i {
+        margin-right: 6px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2231,24 +2375,6 @@ button, input, textarea {
     
     .hero-image-label {
         font-size: 12px;
-    }
-    
-    .hero-stats-below {
-        gap: 16px;
-        padding: 10px 16px;
-        flex-wrap: wrap;
-    }
-    
-    .hero-stats-below .stat-number {
-        font-size: 16px;
-    }
-    
-    .hero-stats-below .stat-label {
-        font-size: 11px;
-    }
-    
-    .hero-stats-below .stat-divider {
-        height: 24px;
     }
     
     .blog-card-image {
@@ -2434,5 +2560,23 @@ button, input, textarea {
     
     .image-actions {
         width: 100%;
+    }
+    
+    /* Icon Responsive */
+    .nav-link i {
+        font-size: 11px;
+        margin-right: 3px;
+    }
+    
+    .hero-image-icon i {
+        font-size: 28px;
+    }
+    
+    .form-icon i {
+        font-size: 28px;
+    }
+    
+    .feature-icon i {
+        font-size: 24px;
     }
 }

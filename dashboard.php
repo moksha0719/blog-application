@@ -42,18 +42,18 @@ $recent_blogs = $stmt->get_result();
                 <?php echo $first_letter; ?>
             </div>
             <div>
-                <h1>Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
-                <p class="dashboard-subtitle">Here's what's happening with your blogs</p>
+                <h1><i class="fas fa-wave-square"></i> Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
+                <p class="dashboard-subtitle"><i class="fas fa-chart-line"></i> Here's what's happening with your blogs</p>
             </div>
         </div>
         <a href="create_blog.php" class="btn-dashboard-primary">
-            ✍️ Create New Blog
+            <i class="fas fa-plus-circle"></i> Create New Blog
         </a>
     </div>
 
     <!-- Welcome Card -->
     <div class="dashboard-welcome">
-        <div class="welcome-icon">🎉</div>
+        <div class="welcome-icon"><i class="fas fa-celebrate"></i></div>
         <div class="welcome-content">
             <h3>You're all set!</h3>
             <p>You are successfully logged in. Start writing and sharing your ideas with the world!</p>
@@ -63,7 +63,7 @@ $recent_blogs = $stmt->get_result();
     <!-- Recent Blogs -->
     <div class="dashboard-recent">
         <div class="recent-header">
-            <h3>📖 Your Recent Blogs</h3>
+            <h3><i class="fas fa-history"></i> Your Recent Blogs</h3>
         </div>
         
         <?php if ($recent_blogs->num_rows > 0): ?>
@@ -71,46 +71,46 @@ $recent_blogs = $stmt->get_result();
                 <?php while ($blog = $recent_blogs->fetch_assoc()): ?>
                     <div class="recent-item">
                         <div class="recent-item-left">
-                            <span class="recent-item-icon">📄</span>
+                            <span class="recent-item-icon"><i class="fas fa-file-alt"></i></span>
                             <div>
                                 <a href="view_blog.php?id=<?php echo $blog['id']; ?>" class="recent-item-title">
                                     <?php echo htmlspecialchars($blog['title']); ?>
                                 </a>
                                 <span class="recent-item-date">
-                                    <?php echo date("M j, Y", strtotime($blog['created_at'])); ?>
+                                    <i class="far fa-calendar-alt"></i> <?php echo date("M j, Y", strtotime($blog['created_at'])); ?>
                                 </span>
                             </div>
                         </div>
                         <div class="recent-item-actions">
-                            <a href="edit_blog.php?id=<?php echo $blog['id']; ?>" class="btn-sm btn-edit">✏️ Edit</a>
-                            <a href="view_blog.php?id=<?php echo $blog['id']; ?>" class="btn-sm btn-view">👁️ View</a>
+                            <a href="edit_blog.php?id=<?php echo $blog['id']; ?>" class="btn-sm btn-edit"><i class="fas fa-edit"></i> Edit</a>
+                            <a href="view_blog.php?id=<?php echo $blog['id']; ?>" class="btn-sm btn-view"><i class="fas fa-eye"></i> View</a>
                         </div>
                     </div>
                 <?php endwhile; ?>
             </div>
         <?php else: ?>
             <div class="empty-state">
-                <span class="empty-icon">📝</span>
+                <span class="empty-icon"><i class="fas fa-file-alt" style="font-size: 48px;"></i></span>
                 <p>You haven't written any blogs yet.</p>
-                <a href="create_blog.php" class="btn-empty">Create Your First Blog</a>
+                <a href="create_blog.php" class="btn-empty"><i class="fas fa-plus-circle"></i> Create Your First Blog</a>
             </div>
         <?php endif; ?>
     </div>
 
     <!-- Quick Actions -->
     <div class="dashboard-actions">
-        <h3>⚡ Quick Actions</h3>
+        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
         <div class="actions-grid">
             <a href="create_blog.php" class="action-card">
-                <span class="action-icon">📝</span>
+                <span class="action-icon"><i class="fas fa-pen"></i></span>
                 <span class="action-label">Write a Blog</span>
             </a>
             <a href="index.php#latest-stories" class="action-card">
-                <span class="action-icon">📖</span>
+                <span class="action-icon"><i class="fas fa-book-open"></i></span>
                 <span class="action-label">View All Blogs</span>
             </a>
             <a href="logout.php" class="action-card action-logout">
-                <span class="action-icon">🚪</span>
+                <span class="action-icon"><i class="fas fa-sign-out-alt"></i></span>
                 <span class="action-label">Logout</span>
             </a>
         </div>

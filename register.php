@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-container">
 
-        <span class="form-icon">🎨</span>
+        <span class="form-icon"><i class="fas fa-user-plus"></i></span>
 
         <h2>Create Account</h2>
 
@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (!empty($message)): ?>
 
             <p class="form-message <?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-                <?php echo $message_type === 'success' ? '✅' : '⚠️'; ?>
+                <?php echo $message_type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>'; ?>
                 <?php echo htmlspecialchars($message); ?>
             </p>
 
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="username">
-                    👤 Username
+                    <i class="fas fa-user"></i> Username
                 </label>
 
                 <input
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="email">
-                    📧 Email
+                    <i class="fas fa-envelope"></i> Email
                 </label>
 
                 <input
@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="password">
-                    🔒 Password
+                    <i class="fas fa-lock"></i> Password
                 </label>
 
                 <input
@@ -169,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-group">
 
                 <label for="confirm_password">
-                    ✅ Confirm Password
+                    <i class="fas fa-check-double"></i> Confirm Password
                 </label>
 
                 <input
@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <button type="submit" class="btn">
-                🚀 Create Account
+                <i class="fas fa-user-plus"></i> Create Account
             </button>
 
         </form>
