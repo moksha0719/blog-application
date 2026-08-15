@@ -1,8 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-require_once 'config/database.php';
-require_once 'includes/auth.php';
-
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/auth.php';
 
 // Check whether blog ID exists
 if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
@@ -12,20 +13,20 @@ if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
 
 $blog_id = (int) $_GET["id"];
 
-// Get blog and author information
+// CHANGE blogPost TO blogpost
 $sql = "SELECT
-            blogPost.id,
-            blogPost.user_id,
-            blogPost.title,
-            blogPost.content,
-            blogPost.created_at,
-            blogPost.updated_at,
-            blogPost.image,
+            blogpost.id,
+            blogpost.user_id,
+            blogpost.title,
+            blogpost.content,
+            blogpost.created_at,
+            blogpost.updated_at,
+            blogpost.image,
             user.username
-        FROM blogPost
+        FROM blogpost
         INNER JOIN user
-        ON blogPost.user_id = user.id
-        WHERE blogPost.id = ?";
+        ON blogpost.user_id = user.id
+        WHERE blogpost.id = ?";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $blog_id);
@@ -55,44 +56,26 @@ function removeEmojis($text) {
     return $text;
 }
 
-// Check if user came from edit page using session
-if (isset($_SESSION['return_to']) && $_SESSION['return_to'] == 'latest-stories') {
+// Get the referring page URL
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
+if (strpos($referer, 'dashboard.php') !== false) {
+    $back_url = 'dashboard.php';
+} elseif (strpos($referer, 'index.php') !== false) {
     $back_url = 'index.php#latest-stories';
-    $back_text = 'Latest Stories';
-    unset($_SESSION['return_to']);
 } else {
-    // Get the referring page URL
-    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
-    
-    if (strpos($referer, 'dashboard.php') !== false) {
-        $back_url = 'dashboard.php';
-        $back_text = 'Dashboard';
-    } elseif (strpos($referer, 'index.php') !== false) {
-        $back_url = 'index.php#latest-stories';
-        $back_text = 'Latest Stories';
-    } elseif (strpos($referer, 'edit_blog.php') !== false) {
-        $back_url = 'index.php#latest-stories';
-        $back_text = 'Latest Stories';
-    } else {
-        $back_url = 'index.php';
-        $back_text = 'Home';
-    }
+    $back_url = 'index.php';
 }
 
+include __DIR__ . '/includes/header.php';
 ?>
 
-<?php include 'includes/header.php'; ?>
-
-
 <section class="single-blog-section">
-
     <div class="single-blog">
-
-        <!-- Stylish Back Button - Smart -->
+        <!-- Stylish Back Button -->
         <div class="single-blog-back">
             <a href="<?php echo $back_url; ?>" class="btn-back-article">
                 <span class="back-arrow"><i class="fas fa-arrow-left"></i></span>
-                <span class="back-text">Back to <?php echo $back_text; ?></span>
+                <span class="back-text">Back</span>
             </a>
         </div>
 
@@ -124,7 +107,6 @@ if (isset($_SESSION['return_to']) && $_SESSION['return_to'] == 'latest-stories')
 
         <div class="single-blog-content">
             <?php
-            // Convert line breaks into paragraphs - REMOVE EMOJIS
             $clean_content = removeEmojis($blog["content"]);
             $paragraphs = preg_split("/\r\n|\r|\n/", $clean_content);
 
@@ -135,7 +117,6 @@ if (isset($_SESSION['return_to']) && $_SESSION['return_to'] == 'latest-stories')
             }
             ?>
             
-            <!-- Edit & Delete Buttons - AT THE BOTTOM -->
             <?php if (
                 isset($_SESSION["user_id"]) &&
                 $_SESSION["user_id"] == $blog["user_id"]
@@ -152,10 +133,7 @@ if (isset($_SESSION['return_to']) && $_SESSION['return_to'] == 'latest-stories')
                 </div>
             <?php endif; ?>
         </div>
-
     </div>
-
 </section>
 
-
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>

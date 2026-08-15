@@ -1,7 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-require_once 'config/database.php';
-require_once 'includes/auth.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/auth.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
@@ -12,29 +14,25 @@ $user_id = $_SESSION["user_id"];
 $username = $_SESSION["username"];
 $first_letter = strtoupper(substr($username, 0, 1));
 
-// Get user's blog posts count
-$blog_count_sql = "SELECT COUNT(*) as total FROM blogPost WHERE user_id = ?";
+// CHANGE blogPost TO blogpost
+$blog_count_sql = "SELECT COUNT(*) as total FROM blogpost WHERE user_id = ?";
 $stmt = $conn->prepare($blog_count_sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $blog_count_result = $stmt->get_result();
 $blog_count = $blog_count_result->fetch_assoc()['total'];
 
-// Get user's recent blogs
-$recent_sql = "SELECT id, title, created_at FROM blogPost WHERE user_id = ? ORDER BY created_at DESC LIMIT 5";
+// CHANGE blogPost TO blogpost
+$recent_sql = "SELECT id, title, created_at FROM blogpost WHERE user_id = ? ORDER BY created_at DESC LIMIT 5";
 $stmt = $conn->prepare($recent_sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $recent_blogs = $stmt->get_result();
 
+include __DIR__ . '/includes/header.php';
 ?>
 
-
-<?php include 'includes/header.php'; ?>
-
-
 <section class="dashboard-section">
-
     <!-- Dashboard Header -->
     <div class="dashboard-header">
         <div class="dashboard-header-left">
@@ -115,8 +113,6 @@ $recent_blogs = $stmt->get_result();
             </a>
         </div>
     </div>
-
 </section>
 
-
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>

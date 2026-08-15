@@ -1,32 +1,43 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-require_once 'config/database.php';
+require_once __DIR__ . '/config/database.php';
 
-
-// Get all blog posts
+// Get all blog posts - CHANGE blogPost TO blogpost
 $sql = "SELECT
-            blogPost.id,
-            blogPost.title,
-            blogPost.content,
-            blogPost.created_at,
-            blogPost.image,
+            blogpost.id,
+            blogpost.title,
+            blogpost.content,
+            blogpost.created_at,
+            blogpost.image,
             user.username
-        FROM blogPost
+        FROM blogpost
         INNER JOIN user
-        ON blogPost.user_id = user.id
-        ORDER BY blogPost.created_at DESC";
+        ON blogpost.user_id = user.id
+        ORDER BY blogpost.created_at DESC";
 
 $result = $conn->query($sql);
 
+// Get counts for stats - CHANGE blogPost TO blogpost
+$count_sql = "SELECT COUNT(*) as total FROM blogpost";
+$count_result = $conn->query($count_sql);
+$total_blogs = $count_result->fetch_assoc()['total'];
+
+$user_sql = "SELECT COUNT(*) as total FROM user";
+$user_result = $conn->query($user_sql);
+$total_users = $user_result->fetch_assoc()['total'];
+
+// Start session if not started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include __DIR__ . '/includes/header.php';
 ?>
-
-
-<?php include 'includes/header.php'; ?>
-
 
 <!-- HERO SECTION -->
 <section class="hero">
-
     <div class="hero-content">
         <div class="hero-text">
             <h1>Share Your Stories,<br><span>Inspire the World</span></h1>
@@ -64,9 +75,7 @@ $result = $conn->query($sql);
             <?php endif; ?>
         </div>
     </div>
-
 </section>
-
 
 <!-- FEATURES SECTION -->
 <section class="features-section">
@@ -95,7 +104,6 @@ $result = $conn->query($sql);
     </div>
 </section>
 
-
 <!-- HOW IT WORKS -->
 <section class="how-it-works" id="how-it-works">
     <div class="section-label">
@@ -123,21 +131,16 @@ $result = $conn->query($sql);
     </div>
 </section>
 
-
 <!-- BLOG SECTION -->
 <section class="blog-section" id="latest-stories">
-
     <div class="section-heading">
         <h2><i class="fas fa-newspaper"></i> Latest Stories</h2>
         <a href="#latest-stories" class="view-all-link">View all <i class="fas fa-arrow-right"></i></a>
     </div>
 
     <div class="blog-grid">
-
         <?php if ($result->num_rows > 0): ?>
-
             <?php while ($blog = $result->fetch_assoc()): ?>
-
                 <article class="blog-card">
                     <div class="blog-card-image">
                         <?php if (!empty($blog["image"])): ?>
@@ -157,17 +160,12 @@ $result = $conn->query($sql);
                         <h3><?php echo htmlspecialchars($blog["title"]); ?></h3>
                         <p class="excerpt">
                             <?php 
-                            // Remove emojis from content
                             $clean_content = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $blog["content"]);
                             $clean_content = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $clean_content);
                             $clean_content = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $clean_content);
                             $clean_content = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $clean_content);
                             $clean_content = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $clean_content);
                             $clean_content = preg_replace('/[\x{1F900}-\x{1F9FF}]/u', '', $clean_content);
-                            $clean_content = preg_replace('/[\x{1F700}-\x{1F77F}]/u', '', $clean_content);
-                            $clean_content = preg_replace('/[\x{1F780}-\x{1F7FF}]/u', '', $clean_content);
-                            $clean_content = preg_replace('/[\x{1F800}-\x{1F8FF}]/u', '', $clean_content);
-                            $clean_content = preg_replace('/[\x{1F100}-\x{1F1FF}]/u', '', $clean_content);
                             
                             $clean_text = strip_tags($clean_content);
                             $clean_text = trim($clean_text);
@@ -192,21 +190,14 @@ $result = $conn->query($sql);
                         </div>
                     </div>
                 </article>
-
             <?php endwhile; ?>
-
         <?php else: ?>
-
             <p style="text-align:center; color:var(--text-muted); padding:40px 0;">
                 <i class="fas fa-inbox" style="font-size: 48px; display: block; margin-bottom: 16px;"></i>
                 No blogs published yet. Be the first to share your story!
             </p>
-
         <?php endif; ?>
-
     </div>
-
 </section>
 
-
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>
