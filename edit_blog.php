@@ -34,10 +34,7 @@ $message_type = "";
 
 // Get the blog
 
-$sql = "SELECT id, user_id, title, content, image
-        FROM blogPost
-        WHERE id = ?";
-
+$sql = "SELECT id, user_id, title, content, image FROM blogpost WHERE id = ?";
 $stmt = $conn->prepare($sql);
 
 $stmt->bind_param("i", $blog_id);
@@ -150,7 +147,7 @@ if (isset($_POST['delete_image'])) {
         unlink($blog["image"]);
     }
     
-    $update_sql = "UPDATE blogPost SET image = NULL WHERE id = ? AND user_id = ?";
+    $update_sql = "UPDATE blogpost SET image = NULL WHERE id = ? AND user_id = ?";
     $update_stmt = $conn->prepare($update_sql);
     $update_stmt->bind_param("ii", $blog_id, $user_id);
     
@@ -240,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['delete_image'])) {
         }
 
         if (empty($message)) {
-            $update_sql = "UPDATE blogPost
+            $update_sql = "UPDATE blogpost
                            SET title = ?, content = ?, image = ?
                            WHERE id = ?
                            AND user_id = ?";

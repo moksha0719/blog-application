@@ -1,7 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-require_once 'config/database.php';
-require_once 'includes/auth.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/auth.php';
 
 
 // Check whether user is logged in
@@ -70,7 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (empty($message)) {
-            $sql = "INSERT INTO blogPost
+            // FIXED: Changed blogPost to blogpost (lowercase)
+            $sql = "INSERT INTO blogpost
                     (user_id, title, content, image)
                     VALUES (?, ?, ?, ?)";
 
@@ -106,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
-<?php include 'includes/header.php'; ?>
+<?php include __DIR__ . '/includes/header.php'; ?>
 
 
 <section class="create-blog-section">
@@ -196,4 +199,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </section>
 
 
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>
